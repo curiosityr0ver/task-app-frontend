@@ -133,7 +133,7 @@ const SingleTask = ({ fetchAgain, setFetchAgain }) => {
       };
       // return console.log(selectedTask._id);
       const { data } = await axios.delete(
-        `/api/task/${selectedTask._id}`,
+        `https://task-manager-backend-production-81bc.up.railway.app/api/task/${selectedTask._id}`,
         config
       );
 

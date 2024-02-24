@@ -23,7 +23,7 @@ const MyTasks = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get("/api/task", config);
+      const { data } = await axios.get("https://task-manager-backend-production-81bc.up.railway.app/api/task", config);
 
       setTasks(data);
       // console.log(tasks);

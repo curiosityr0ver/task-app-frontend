@@ -49,7 +49,7 @@ const NewTaskModal = ({ children }) => {
             };
             // console.log(taskDeadline);
             const { data } = await axios.post(
-                `/api/task/`,
+                `https://task-manager-backend-production-81bc.up.railway.app/api/task/`,
                 {
                     title: taskTitle,
                     description: taskDescription,

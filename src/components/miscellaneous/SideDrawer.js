@@ -62,7 +62,7 @@ const SideDrawer = () => {
                 },
             };
 
-            const { data } = await axios.get(`/api/task?search=${search}`, config);
+            const { data } = await axios.get(`https://task-manager-backend-production-81bc.up.railway.app/api/task?search=${search}`, config);
             // console.log(data);
             setSearchResult(data);
         } catch (error) {
@@ -86,7 +86,7 @@ const SideDrawer = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get(`/api/task${taskId}`, config);
+            const { data } = await axios.get(`https://task-manager-backend-production-81bc.up.railway.app/api/task${taskId}`, config);
 
             setSelectedTask(data);
             onClose();
