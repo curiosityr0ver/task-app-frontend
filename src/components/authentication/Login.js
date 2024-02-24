@@ -41,7 +41,7 @@ const Login = () => {
             };
 
             const { data } = await axios.post(
-                "/api/user/login",
+                "https://task-manager-backend-production-81bc.up.railway.app/api/user/login",
                 { email, password },
                 config
             );
