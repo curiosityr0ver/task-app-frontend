@@ -6,6 +6,8 @@ import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { TaskState } from "../../context/TaskProvider";
+
 
 const Signup = () => {
     const [show, setShow] = useState(false);
@@ -19,6 +21,8 @@ const Signup = () => {
     const [password, setPassword] = useState();
     const [pic, setPic] = useState();
     const [picLoading, setPicLoading] = useState(false);
+    const { setTasks } = TaskState();
+
 
     const submitHandler = async () => {
         setPicLoading(true);
@@ -43,7 +47,7 @@ const Signup = () => {
             });
             return;
         }
-        console.log(name, email, password, pic);
+        // console.log(name, email, password, pic);
         try {
             const config = {
                 headers: {
@@ -70,6 +74,7 @@ const Signup = () => {
             });
             localStorage.removeItem("userInfo");
             localStorage.setItem("userInfo", JSON.stringify(data));
+            setTasks([]);
             setPicLoading(false);
             navigate("/tasks");
         } catch (error) {

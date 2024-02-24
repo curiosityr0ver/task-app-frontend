@@ -15,6 +15,7 @@ const Login = () => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [loading, setLoading] = useState(false);
+    const { setTasks } = TaskState();
 
     const navigate = useNavigate();
     const { setUser } = TaskState();
@@ -57,6 +58,7 @@ const Login = () => {
             // return;
             setUser(data);
             localStorage.removeItem("userInfo");
+            setTasks([]);
             localStorage.setItem("userInfo", JSON.stringify(data));
             setLoading(false);
             navigate("/tasks");
