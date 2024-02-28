@@ -18,8 +18,8 @@ const MyNotes = () => {
   const fetchNotes = async () => {
     // console.log(user._id);
     try {
-      // const { data } = await axios.get("https://task-manager-backend-production-81bc.up.railway.app/api/task", config);
-      const { data } = await axios.get("http://localhost:5000/api/note");
+      const { data } = await axios.get("https://task-manager-backend-production-81bc.up.railway.app/api/note");
+      // const { data } = await axios.get("http://localhost:5000/api/note");
       setNotes(data);
       // console.log(data);
       // console.log([...new Set(data.map(note => note.group))]);
@@ -111,10 +111,7 @@ const MyNotes = () => {
             />
           </NewNoteModal>
         </Box>
-
       </Box>
-
-
     </Box>
   );
 };

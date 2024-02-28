@@ -15,7 +15,7 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
   // const [socketConnected, setSocketConnected] = useState(false);
   const [note, setNote] = useState();
   const toast = useToast();
-  const { user, notes, setNotes, selectedGroup, setSelectedGroup } = NoteState();
+  const { notes, setNotes, selectedGroup } = NoteState();
   // console.log(selectedGroup);
 
   useEffect(() => {
@@ -24,11 +24,14 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
   }, [note]);
 
   const handleSubmit = async () => {
-    const { data } = await axios.post("http://localhost:5000/api/note", {
+    if (!note) return;
+    const { data } = await axios.post("https://task-manager-backend-production-81bc.up.railway.app/api/note", {
       group: selectedGroup,
       description: note
     });
-    setNotes([data, ...notes]);
+    setNotes([...notes, data]);
+    setNote("");
+    // console.log(note);
   };
 
 
@@ -95,12 +98,12 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
             />
           </FormControl>
           <Box display="flex" flexDir="row" justifyContent="flex-end" width="100%" p="10px 20px">
-            <Icon color="gray" onClick={handleSubmit} fontSize="2xl" as={IoSend}>
+            <Icon color={note ? "black" : " gray"} _hover={note && { transform: "scale(1.1)" }} onClick={handleSubmit} fontSize="2xl" as={IoSend}>
             </Icon>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Box >
   ) : (
     <Box mt="15%" display="flex" flexDir="column" alignItems="center">
       <Image src={require("../assets/corporate_art_memphis.png")} alt='Corporate Art' />

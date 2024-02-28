@@ -5,7 +5,7 @@ import { NoteState } from "../context/NoteProvider";
 import SideDrawer from "../components/miscellaneous/SideDrawer";
 
 
-const Notebox = ({ fetchAgain, setFetchAgain }) => {
+const Notebox = () => {
   const { selectedGroup } = NoteState();
   // console.log(selectedGroup);
   // console.log(selectedGroup);

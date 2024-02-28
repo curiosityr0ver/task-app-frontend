@@ -42,7 +42,7 @@ const NewNoteModal = ({ children }) => {
         // console.log(noteDescription, typeof (noteDescription));
         try {
             const { data } = await axios.post(
-                `http://localhost:5000/api/note`,
+                `https://task-manager-backend-production-81bc.up.railway.app/api/note`,
                 {
                     group: noteGroup,
                     description: " ",
