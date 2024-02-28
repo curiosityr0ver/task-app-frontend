@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import { TaskState } from "../../context/TaskProvider";
+import { NoteState } from "../../context/NoteProvider";
 
 
 const NewTaskModal = ({ children }) => {
@@ -25,7 +25,7 @@ const NewTaskModal = ({ children }) => {
     const [taskDeadline, setTaskDeadline] = useState();
     const toast = useToast();
 
-    const { user, tasks, setTasks } = TaskState();
+    const { user, tasks, setTasks } = NoteState();
 
 
 

@@ -6,7 +6,7 @@ import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { TaskState } from "../../context/TaskProvider";
+import { NoteState } from "../../context/NoteProvider";
 
 
 const Signup = () => {
@@ -21,7 +21,7 @@ const Signup = () => {
     const [password, setPassword] = useState();
     const [pic, setPic] = useState();
     const [picLoading, setPicLoading] = useState(false);
-    const { setTasks } = TaskState();
+    const { setTasks } = NoteState();
 
 
     const submitHandler = async () => {

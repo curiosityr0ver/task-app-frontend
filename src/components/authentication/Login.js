@@ -6,7 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { TaskState } from "../../context/TaskProvider";
+import { NoteState } from "../../context/NoteProvider";
 
 const Login = () => {
     const [show, setShow] = useState(false);
@@ -15,10 +15,10 @@ const Login = () => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [loading, setLoading] = useState(false);
-    const { setTasks } = TaskState();
+    const { setTasks } = NoteState();
 
     const navigate = useNavigate();
-    const { setUser } = TaskState();
+    const { setUser } = NoteState();
 
     const submitHandler = async () => {
         setLoading(true);

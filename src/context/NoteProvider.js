@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const TaskContext = createContext();
+const NoteContext = createContext();
 
-const TaskProvider = ({ children }) => {
-    const [selectedTask, setSelectedTask] = useState();
+const NoteProvider = ({ children }) => {
+    const [selectedGroup, setSelectedGroup] = useState();
     const [user, setUser] = useState();
     const [notification, setNotification] = useState([]);
-    const [tasks, setTasks] = useState([]);
+    const [notes, setNotes] = useState([]);
 
 
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ const TaskProvider = ({ children }) => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         if (!userInfo) {
             navigate("/");
-            setTasks([]);
+            setNotes([]);
         } else {
             setUser(userInfo);
         }
@@ -25,25 +25,25 @@ const TaskProvider = ({ children }) => {
     }, []);
 
     return (
-        <TaskContext.Provider
+        <NoteContext.Provider
             value={{
-                selectedTask,
-                setSelectedTask,
+                selectedGroup,
+                setSelectedGroup,
                 user,
                 setUser,
                 notification,
                 setNotification,
-                tasks,
-                setTasks
+                notes,
+                setNotes
             }}
         >
             {children}
-        </TaskContext.Provider>
+        </NoteContext.Provider>
     );
 };
 
-export const TaskState = () => {
-    return useContext(TaskContext);
+export const NoteState = () => {
+    return useContext(NoteContext);
 };
 
-export default TaskProvider;
+export default NoteProvider;

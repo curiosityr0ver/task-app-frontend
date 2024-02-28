@@ -25,14 +25,14 @@ import {
     DrawerHeader,
     DrawerOverlay,
 } from "@chakra-ui/modal";
-import { TaskState } from "../../context/TaskProvider";
+import { NoteState } from "../../context/NoteProvider";
 import { useNavigate } from 'react-router-dom';
 
 
 const SideDrawer = () => {
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
-    const { setSelectedTask, user } = TaskState();
+    const { selectedGroup, setSelectedGroup, user } = NoteState();
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const history = useNavigate();
@@ -88,7 +88,7 @@ const SideDrawer = () => {
             };
             const { data } = await axios.get(`https://task-manager-backend-production-81bc.up.railway.app/api/task${taskId}`, config);
 
-            setSelectedTask(data);
+            setSelectedGroup(data);
             onClose();
         } catch (error) {
             toast({
@@ -105,65 +105,19 @@ const SideDrawer = () => {
 
     return (
         <Box
-            bg="white"
-            p="5px 10px 5px 10px"
-            borderWidth="5px"
+            bg="#001f8b"
+            color="white"
+            width="100%"
+            height="4rem"
+            padding="5px"
             display='flex'
-            justifyContent="space-between"
+            gap="20px"
             alignItems="center"
         >
-            <Tooltip label="Search users to chat" hasArrow placeContent='bottom-end' >
-                <Button variant='ghost' onClick={onOpen}>
-                    <i className="fas fa-search"></i>
-                    <Text display={{ base: "none", md: "flex" }} p="4">
-                        Search Tasks
-                    </Text>
-                </Button>
-            </Tooltip>
-            <Text fontSize='2xl' fontFamily='Work sans'>
-                {user.name}
+            <Avatar name={selectedGroup} />
+            <Text>
+                {selectedGroup}
             </Text>
-            <div>
-                <Menu>
-                    <MenuButton>
-                        <Avatar size='sm' cursor='pointer' name={user.name} src={user.pic} />
-                    </MenuButton>
-
-                    <MenuButton
-                        onClick={logoutHandler}
-                        ml='2'
-                        as={Button}
-                        colorScheme='red'
-                        rightIcon={<CloseIcon size='sm' />}
-                    >
-                        Log Out
-                    </MenuButton>
-                </Menu>
-            </div>
-            <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerHeader borderBottomWidth="1px">Search Tasks</DrawerHeader>
-                    <DrawerBody>
-                        <Box d="flex" pb={2}>
-                            <Input
-                                placeholder="Search by title"
-                                mr={2}
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                            <Button onClick={handleSearch}>Go</Button>
-                        </Box>
-                        {searchResult?.map((task) =>
-                            <TaskListItem
-                                key={task._id}
-                                task={task}
-                                handleFunction={() => accessTask(task._id)}
-                            />
-                        )}
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
         </Box >
     );
 };
