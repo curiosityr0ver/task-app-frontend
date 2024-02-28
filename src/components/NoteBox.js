@@ -21,7 +21,7 @@ const Notebox = ({ fetchAgain, setFetchAgain }) => {
       borderRadius="lg"
     >
       {selectedGroup && <SideDrawer />}
-      <SingleNote fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+      <SingleNote />
     </Box>
   );
 };

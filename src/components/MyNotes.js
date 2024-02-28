@@ -3,12 +3,13 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import NewTaskModal from "./miscellaneous/NewTaskModal";
+import NewNoteModal from "./miscellaneous/NewNoteModal";
 import { Button, IconButton } from "@chakra-ui/react";
 import { NoteState } from "../context/NoteProvider";
+import { Avatar } from "@chakra-ui/avatar";
 
-const MyNotes = ({ fetchAgain }) => {
-  const [loggedUser, setLoggedUser] = useState();
+
+const MyNotes = () => {
 
   const { selectedGroup, setSelectedGroup, notes, setNotes, user } = NoteState();
 
@@ -29,7 +30,7 @@ const MyNotes = ({ fetchAgain }) => {
       console.log(error);
       toast({
         title: "Error Occured!",
-        description: "Failed to Load the notes",
+        description: "Failed to Load the Notes",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -51,7 +52,7 @@ const MyNotes = ({ fetchAgain }) => {
       display={{ base: selectedGroup ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
-      p={3}
+      py={3}
       bg="white"
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
@@ -63,27 +64,26 @@ const MyNotes = ({ fetchAgain }) => {
       <Box
         display="flex"
         flexDir="column"
-        p={3}
-        bg="#F8F8F8"
+        py={3}
         w="100%"
         h="100%"
-        borderRadius="lg"
       >
 
-        <Stack overflowY="scroll">
+        <Stack>
           {notes && fetchGroups().map((group, index) => {
             return (
               <Box
+                display='flex'
+                alignItems='center'
+                gap="1rem"
                 onClick={() => setSelectedGroup(group)}
                 cursor="pointer"
-                bg={selectedGroup === group ? "#38B2AC" : "#E8E8E8"}
-                color={selectedGroup === group ? "white" : "black"}
-                px={3}
-                py={2}
-                borderRadius="lg"
+                bg={selectedGroup === group ? "#EEEDEB" : "white"}
+                // color={selectedGroup === group ? "white" : "black"}
                 key={index}
               >
-                <Text>
+                <Avatar name={group} />
+                <Text fontWeight='bold' fontSize='2xl'>
                   {group}
                 </Text>
               </Box>
@@ -91,14 +91,20 @@ const MyNotes = ({ fetchAgain }) => {
           })}
         </Stack>
       </Box>
-      <NewTaskModal >
-        <IconButton
-          // fontSize={"lg"}
-          borderRadius={"20px"}
-          icon={<AddIcon />}
-          colorScheme="blue"
-        />
-      </NewTaskModal>
+      <Box w="100%" display="flex" p="10px" justifyContent="flex-end">
+        <NewNoteModal >
+          <IconButton
+            // fontSize={"lg"}
+            borderRadius={"3rem"}
+            icon={<AddIcon />}
+            height="3rem"
+            width="3rem"
+            backgroundColor="#001f8b"
+            color="white"
+          />
+        </NewNoteModal>
+      </Box>
+
     </Box>
   );
 };

@@ -5,7 +5,7 @@ import MyNotes from "../components/MyNotes";
 import SideDrawer from "../components/miscellaneous/SideDrawer";
 import { NoteState } from "../context/NoteProvider";
 
-const Taskpage = () => {
+const Notepage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
 
     const { user, setUser, selectedNote } = NoteState();
@@ -26,4 +26,4 @@ const Taskpage = () => {
     );
 };
 
-export default Taskpage;
+export default Notepage;

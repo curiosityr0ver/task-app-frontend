@@ -1,7 +1,7 @@
 import './App.css';
 import { Routes, Route } from "react-router-dom";
 import Homepage from "./pages/Homepage";
-import Taskpage from "./pages/Notepage";
+import Notepage from "./pages/Notepage";
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path='/' element={<Homepage />} exact />
-        <Route path='/tasks' element={<Taskpage />} />
+        <Route path='/tasks' element={<Notepage />} />
       </Routes>
     </div>
   );
