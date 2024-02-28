@@ -82,6 +82,7 @@ const MyNotes = () => {
                   alignItems='center'
                   gap="1.5rem"
                   ml="60px"
+                  mt="5px"
                   onClick={() => setSelectedGroup(group)}
                   cursor="pointer"
                   bg={selectedGroup === group ? "#EEEDEB" : "white"}

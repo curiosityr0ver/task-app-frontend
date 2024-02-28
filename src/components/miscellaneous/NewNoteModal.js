@@ -17,6 +17,7 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { NoteState } from "../../context/NoteProvider";
+import { transform } from "framer-motion";
 
 const NewNoteModal = ({ children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,15 +42,20 @@ const NewNoteModal = ({ children }) => {
         }
         // console.log(noteDescription, typeof (noteDescription));
         try {
+
+            const processedGroup = noteGroup.split(" ").map(word => {
+                return `${word.charAt(0).toUpperCase() + word.slice(1)}`;
+            });
             const { data } = await axios.post(
+
                 `https://task-manager-backend-production-81bc.up.railway.app/api/note`,
                 {
-                    group: noteGroup,
+                    group: processedGroup.join(" "),
                     description: " ",
                     color: noteColor
                 }
             );
-            console.log(data);
+            // console.log(data);
             setNotes([data, ...notes]);
             onClose();
             toast({
@@ -103,9 +109,9 @@ const NewNoteModal = ({ children }) => {
                             <Box width="60%" display={"flex"} ml={"15px"} gap="8px">
                                 {colors.map(color => {
                                     return (
-                                        <div key={color} onClick={() => { setNoteColor(color); }} style={{ backgroundColor: color, height: "25px", width: "25px", borderRadius: "1rem" }}>
+                                        <Box key={color} onClick={() => { setNoteColor(color); }} bg={color} height="25px" width="25px" borderRadius="13px" _hover={{ transform: "scale(1.05)" }}>
                                             {/* hey */}
-                                        </div>
+                                        </Box>
                                     );
                                 })}
                             </Box>
@@ -117,7 +123,7 @@ const NewNoteModal = ({ children }) => {
                         </Button>
                     </ModalFooter>
                 </ModalContent>
-            </Modal>
+            </Modal >
         </>
     );
 };

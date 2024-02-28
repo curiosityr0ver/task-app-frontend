@@ -24,6 +24,7 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
   }, [note]);
 
   const handleSubmit = async () => {
+
     if (!note) return;
     const { data } = await axios.post("https://task-manager-backend-production-81bc.up.railway.app/api/note", {
       group: selectedGroup,
@@ -119,7 +120,7 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
       </Text>
 
 
-      <Box mt="65%" display="flex" alignItems="center">
+      <Box mt="150px" display="flex" alignItems="center">
         <Icon fontSize="xl" as={IoMdLock} />
         <Text>
           end-to-end encrypted
