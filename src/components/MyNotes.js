@@ -7,7 +7,7 @@ import NewNoteModal from "./miscellaneous/NewNoteModal";
 import { Button, IconButton } from "@chakra-ui/react";
 import { NoteState } from "../context/NoteProvider";
 import { Avatar } from "@chakra-ui/avatar";
-
+import ScrollableFeed from 'react-scrollable-feed';
 
 const MyNotes = () => {
 
@@ -15,16 +15,14 @@ const MyNotes = () => {
 
   const toast = useToast();
 
-  const fetchTasks = async () => {
+  const fetchNotes = async () => {
     // console.log(user._id);
     try {
-
       // const { data } = await axios.get("https://task-manager-backend-production-81bc.up.railway.app/api/task", config);
       const { data } = await axios.get("http://localhost:5000/api/note");
       setNotes(data);
       // console.log(data);
       // console.log([...new Set(data.map(note => note.group))]);
-      // console.log(tasks);
 
     } catch (error) {
       console.log(error);
@@ -40,11 +38,19 @@ const MyNotes = () => {
   };
 
   const fetchGroups = () => {
-    return [...new Set(notes.map(note => note.group))];
+    notes.forEach(note => {
+      console.log(note.color);
+    });
+    const res = [...new Set(notes.map(note => note.group))];
+    // res.forEach(r => {
+    //   console.log(r);
+    //   // console.log(notes.ge);
+    // });
+    return res;
   };
 
   useEffect(() => {
-    fetchTasks();
+    fetchNotes();
   }, []);
 
   return (
@@ -55,12 +61,10 @@ const MyNotes = () => {
       py={3}
       bg="white"
       w={{ base: "100%", md: "31%" }}
-      borderRadius="lg"
-      borderWidth="1px"
     >
-
-      Pocket Notes
-
+      <Text m="1rem" fontWeight='bold' fontSize='2xl'>
+        Pocket Notes
+      </Text>
       <Box
         display="flex"
         flexDir="column"
@@ -68,42 +72,48 @@ const MyNotes = () => {
         w="100%"
         h="100%"
       >
+        <ScrollableFeed>
+          <Stack height="640px">
+            {notes && fetchGroups().map((group, index) => {
+              const currNote = notes.find(note => { return (group == note.group); });
+              return (
+                <Box
+                  display='flex'
+                  alignItems='center'
+                  gap="1.5rem"
+                  ml="60px"
+                  onClick={() => setSelectedGroup(group)}
+                  cursor="pointer"
+                  bg={selectedGroup === group ? "#EEEDEB" : "white"}
+                  // color={selectedGroup === group ? "white" : "black"}
+                  key={index}
+                >
+                  <Avatar name={group} bg={currNote.color} color={"white"} />
+                  <Text fontWeight='bold' fontSize='xl'>
+                    {group}
+                  </Text>
+                </Box>
+              );
+            })}
+          </Stack>
 
-        <Stack>
-          {notes && fetchGroups().map((group, index) => {
-            return (
-              <Box
-                display='flex'
-                alignItems='center'
-                gap="1rem"
-                onClick={() => setSelectedGroup(group)}
-                cursor="pointer"
-                bg={selectedGroup === group ? "#EEEDEB" : "white"}
-                // color={selectedGroup === group ? "white" : "black"}
-                key={index}
-              >
-                <Avatar name={group} />
-                <Text fontWeight='bold' fontSize='2xl'>
-                  {group}
-                </Text>
-              </Box>
-            );
-          })}
-        </Stack>
+        </ScrollableFeed>
+        <Box position="absolute" right="78%" bottom="25px" w="100%" display="flex" p="10px" justifyContent="flex-end">
+          <NewNoteModal >
+            <IconButton
+              // fontSize={"lg"}
+              borderRadius={"3rem"}
+              icon={<AddIcon />}
+              height="3rem"
+              width="3rem"
+              backgroundColor="#001f8b"
+              color="white"
+            />
+          </NewNoteModal>
+        </Box>
+
       </Box>
-      <Box w="100%" display="flex" p="10px" justifyContent="flex-end">
-        <NewNoteModal >
-          <IconButton
-            // fontSize={"lg"}
-            borderRadius={"3rem"}
-            icon={<AddIcon />}
-            height="3rem"
-            width="3rem"
-            backgroundColor="#001f8b"
-            color="white"
-          />
-        </NewNoteModal>
-      </Box>
+
 
     </Box>
   );

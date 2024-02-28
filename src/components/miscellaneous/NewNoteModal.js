@@ -9,6 +9,7 @@ import {
     Button,
     useDisclosure,
     FormControl,
+    FormLabel,
     Input,
     useToast,
     Box,
@@ -17,22 +18,20 @@ import axios from "axios";
 import { useState } from "react";
 import { NoteState } from "../../context/NoteProvider";
 
-
-const NewTaskModal = ({ children }) => {
+const NewNoteModal = ({ children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [taskTitle, setTaskTitle] = useState();
-    const [taskDescription, setTaskDescription] = useState();
-    const [taskDeadline, setTaskDeadline] = useState();
+    const [noteGroup, setNoteGroup] = useState();
+    const [noteDescription, setNoteDescription] = useState("Hey");
+    const [noteColor, setNoteColor] = useState();
     const toast = useToast();
-
-    const { user, tasks, setTasks } = NoteState();
-
+    const { user, notes, setNotes } = NoteState();
+    const colors = ["#b38bfa", "#ff79f2", "#43e6fc", "#f19576", "#0047ff", "#6691ff"];
 
 
     const handleSubmit = async () => {
-        if (!taskTitle || !taskDescription) {
+        if (!noteGroup) {
             toast({
-                title: "Please add task name and description",
+                title: "Please add note group name",
                 status: "warning",
                 duration: 5000,
                 isClosable: true,
@@ -40,27 +39,21 @@ const NewTaskModal = ({ children }) => {
             });
             return;
         }
-
+        // console.log(noteDescription, typeof (noteDescription));
         try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-            // console.log(taskDeadline);
             const { data } = await axios.post(
-                `https://task-manager-backend-production-81bc.up.railway.app/api/task/`,
+                `http://localhost:5000/api/note`,
                 {
-                    title: taskTitle,
-                    description: taskDescription,
-                    deadline: taskDeadline
-                },
-                config
+                    group: noteGroup,
+                    description: " ",
+                    color: noteColor
+                }
             );
-            setTasks([data, ...tasks]);
+            console.log(data);
+            setNotes([data, ...notes]);
             onClose();
             toast({
-                title: "New Task Created!",
+                title: "New Note Created!",
                 status: "success",
                 duration: 5000,
                 isClosable: true,
@@ -68,7 +61,7 @@ const NewTaskModal = ({ children }) => {
             });
         } catch (error) {
             toast({
-                title: "Failed to Create the Task!",
+                title: "Failed to Create the Note!",
                 description: error.response.data,
                 status: "error",
                 duration: 5000,
@@ -83,43 +76,43 @@ const NewTaskModal = ({ children }) => {
             <span onClick={onOpen}>{children}</span>
             <Modal onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent width="400px">
                     <ModalHeader
-                        fontSize="35px"
-                        fontFamily="Work sans"
                         d="flex"
                         justifyContent="center"
                     >
-                        Create New Task
+                        Create New Group
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody d="flex" flexDir="column" alignItems="center">
                         <FormControl>
-                            <Input
-                                placeholder="Task Name"
-                                mb={3}
-                                // value
-                                onChange={(e) => setTaskTitle(e.target.value)}
-                            />
+                            <Box display="flex" alignItems='center'>
+                                <FormLabel>Group Name</FormLabel>
+                                <Input
+                                    width="70%"
+                                    placeholder="Enter Group Name"
+                                    mb={3}
+                                    borderRadius={"16px"}
+                                    onChange={(e) => setNoteGroup(e.target.value)}
+                                />
+                            </Box>
+
                         </FormControl>
-                        <FormControl>
-                            <Input
-                                placeholder="Task Description"
-                                mb={1}
-                                onChange={(e) => setTaskDescription(e.target.value)}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <Input
-                                placeholder="Task Description"
-                                mb={1}
-                                type="date"
-                                onChange={(e) => setTaskDeadline(e.target.value)}
-                            />
-                        </FormControl>
+                        <Box display="flex" gap={"1px"}>
+                            Choose Colour
+                            <Box width="60%" display={"flex"} ml={"15px"} gap="8px">
+                                {colors.map(color => {
+                                    return (
+                                        <div key={color} onClick={() => { setNoteColor(color); }} style={{ backgroundColor: color, height: "25px", width: "25px", borderRadius: "1rem" }}>
+                                            {/* hey */}
+                                        </div>
+                                    );
+                                })}
+                            </Box>
+                        </Box>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={handleSubmit} colorScheme="blue">
+                        <Button backgroundColor={"#001f8b"} onClick={handleSubmit} colorScheme="blue">
                             Create
                         </Button>
                     </ModalFooter>
@@ -129,4 +122,4 @@ const NewTaskModal = ({ children }) => {
     );
 };
 
-export default NewTaskModal;
+export default NewNoteModal;

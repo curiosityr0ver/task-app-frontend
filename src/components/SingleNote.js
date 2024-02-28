@@ -1,13 +1,11 @@
 import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
-import { FormControl, Container, Input, InputGroup, InputRightAddon, Textarea, useToast, Icon } from "@chakra-ui/react";
+import { FormControl, Textarea, useToast, Icon, Image } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { Heading, Badge, Button } from '@chakra-ui/react';
-import UpdateTaskModal from "./miscellaneous/UpdateTaskModal";
+import { IoMdLock } from "react-icons/io";
+import { IoSend } from "react-icons/io5";
 import axios from "axios";
 import ScrollableFeed from 'react-scrollable-feed';
-import { IoSend } from "react-icons/io5";
 
 
 import { NoteState } from "../context/NoteProvider";
@@ -62,7 +60,7 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
       >
         <ScrollableFeed>
           {notes.map((note, index) => {
-            if (note.group == selectedGroup) return (
+            if (note.group == selectedGroup && note.description != "") return (
               <Box
                 key={index}
                 boxShadow='rgba(0, 0, 0, 0.24) 0px 3px 8px;'
@@ -81,7 +79,7 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
           )}
         </ScrollableFeed >
       </Box>
-      <Box display="flex" flexDir="column" backgroundColor="#001f8b" p="15px 20px">
+      <Box display="flex" flexDir="column" width="76.5%" position="absolute" bottom="0px" backgroundColor="#001f8b" p="15px 20px">
         <Box backgroundColor="white" borderRadius="md">
           <FormControl>
             <Textarea
@@ -104,9 +102,28 @@ const SingleNote = ({ fetchAgain, setFetchAgain }) => {
       </Box>
     </Box>
   ) : (
-    <Text fontSize="xx-large" color="gray.700" mb={2}>
-      Select A Group
-    </Text>
+    <Box mt="15%" display="flex" flexDir="column" alignItems="center">
+      <Image src={require("../assets/corporate_art_memphis.png")} alt='Corporate Art' />
+
+      <Text fontWeight="bold" fontSize="xx-large" mb={2}>
+        Pocket Notes
+      </Text>
+      <Text fontWeight="bold" mb={2}>
+        Send and receive messages without keeping your phone online.
+      </Text>
+      <Text fontWeight="bold">
+        Use Pocket Notes on up to 4 linked devices and 1 mobile phone
+      </Text>
+
+
+      <Box mt="65%" display="flex" alignItems="center">
+        <Icon fontSize="xl" as={IoMdLock} />
+        <Text>
+          end-to-end encrypted
+        </Text>
+      </Box>
+    </Box>
+
   );
 };
 

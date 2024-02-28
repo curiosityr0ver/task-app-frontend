@@ -1,32 +1,12 @@
 import React, { useState } from 'react';
-import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
-import { Avatar, Tooltip } from "@chakra-ui/react";
-import { CloseIcon } from '@chakra-ui/icons';
+import { Avatar } from "@chakra-ui/react";
 import axios from "axios";
 
-import {
-    Menu,
-    MenuButton,
-    // MenuDivider,
-    // MenuItem,
-    // MenuList,
-} from "@chakra-ui/menu";
 
-import TaskListItem from "../userAvatar/TaskListItem";
-
-import {
-    Drawer,
-    DrawerBody,
-    DrawerContent,
-    DrawerHeader,
-    DrawerOverlay,
-} from "@chakra-ui/modal";
 import { NoteState } from "../../context/NoteProvider";
-import { useNavigate } from 'react-router-dom';
 
 
 const SideDrawer = () => {
@@ -35,12 +15,8 @@ const SideDrawer = () => {
     const { selectedGroup, setSelectedGroup, user } = NoteState();
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const history = useNavigate();
 
-    const logoutHandler = () => {
-        localStorage.removeItem("userInfo");
-        history('/');
-    };
+
 
     const handleSearch = async () => {
         if (!search) {
@@ -62,7 +38,7 @@ const SideDrawer = () => {
                 },
             };
 
-            const { data } = await axios.get(`https://task-manager-backend-production-81bc.up.railway.app/api/task?search=${search}`, config);
+            const { data } = await axios.get(`https://task-manager-backend-production-81bc.up.railway.app/api/note?search=${search}`, config);
             // console.log(data);
             setSearchResult(data);
         } catch (error) {
@@ -78,7 +54,7 @@ const SideDrawer = () => {
 
     };
 
-    const accessTask = async (taskId) => {
+    const accessNote = async (noteId) => {
         try {
             const config = {
                 headers: {
@@ -86,13 +62,13 @@ const SideDrawer = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get(`https://task-manager-backend-production-81bc.up.railway.app/api/task${taskId}`, config);
+            const { data } = await axios.get(`https://task-manager-backend-production-81bc.up.railway.app/api/task${noteId}`, config);
 
             setSelectedGroup(data);
             onClose();
         } catch (error) {
             toast({
-                title: "Error fetching the task",
+                title: "Error fetching the note",
                 description: error.message,
                 status: "error",
                 duration: 5000,

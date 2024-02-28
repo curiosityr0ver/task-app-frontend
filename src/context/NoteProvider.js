@@ -10,20 +10,6 @@ const NoteProvider = ({ children }) => {
     const [notes, setNotes] = useState([]);
 
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        if (!userInfo) {
-            navigate("/");
-            setNotes([]);
-        } else {
-            setUser(userInfo);
-        }
-        // console.log(userInfo);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <NoteContext.Provider
             value={{

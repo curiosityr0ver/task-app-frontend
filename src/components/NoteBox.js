@@ -7,9 +7,8 @@ import SideDrawer from "../components/miscellaneous/SideDrawer";
 
 const Notebox = ({ fetchAgain, setFetchAgain }) => {
   const { selectedGroup } = NoteState();
-  console.log(selectedGroup);
   // console.log(selectedGroup);
-  // console.log(selectedTask);
+  // console.log(selectedGroup);
 
   return (
     <Box
@@ -18,7 +17,6 @@ const Notebox = ({ fetchAgain, setFetchAgain }) => {
       flexDir="column"
       backgroundColor="#d9e4f4"
       w="100%"
-      borderRadius="lg"
     >
       {selectedGroup && <SideDrawer />}
       <SingleNote />
