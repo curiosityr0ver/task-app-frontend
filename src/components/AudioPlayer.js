@@ -4,12 +4,11 @@ import WaveSurfer from 'wavesurfer.js';
 // import styled from 'styled-components';
 import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 
-const Waveform = ({ audioUrl, turn, setTurn, index }) => {
+const Waveform = ({ audioUrl, turn, setTurn, index, startTime = 0, endTime = 3 }) => {
     const containerRef = useRef();
     const waveSurferRef = useRef({
         isPlaying: () => false,
     });
-    const [isPlaying, toggleIsPlaying] = useState(false);
 
     useEffect(() => {
         const waveSurfer = WaveSurfer.create({
@@ -20,35 +19,29 @@ const Waveform = ({ audioUrl, turn, setTurn, index }) => {
             cursorWidth: 0,
         });
         waveSurfer.load(audioUrl);
+
         waveSurfer.on('ready', () => {
             waveSurferRef.current = waveSurfer;
+            waveSurfer.seekTo(startTime / waveSurfer.getDuration());
         });
-
         return () => {
             waveSurfer.destroy();
         };
     }, [audioUrl]);
 
     useEffect(() => {
-        if (turn != index && isPlaying) {
+        if (turn == index) {
             waveSurferRef.current.playPause();
-            toggleIsPlaying(waveSurferRef.current.isPlaying());
+            setTimeout(() => {
+                waveSurferRef.current.playPause();
+                setTurn(turn + 1);
+            }, (endTime - startTime) * 1000);
         }
     }, [turn]);
 
 
     return (
         <div>
-            <button
-                onClick={() => {
-                    waveSurferRef.current.playPause();
-                    toggleIsPlaying(waveSurferRef.current.isPlaying());
-                    setTurn(index);
-                }}
-                type="button"
-            >
-                {isPlaying ? <FaPauseCircle size="3em" /> : <FaPlayCircle size="3em" />}
-            </button>
             <div ref={containerRef} />
         </div>
     );
