@@ -23,6 +23,13 @@ function App() {
   useEffect(() => {
     // console.log(turn);
     console.log(values);
+    const arrayOfPairs = [];
+
+    for (let i = 1; i < values.length; i++) {
+      arrayOfPairs.push([values[i - 1], values[i]]);
+    }
+    console.log(arrayOfPairs);
+
   }, [values]);
 
   return (
