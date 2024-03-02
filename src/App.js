@@ -5,6 +5,7 @@ import AudioPlayer from './components/AudioPlayer';
 import SliderApp from './components/SliderApp';
 
 function App() {
+  const [count, setCount] = useState(3);
   const [turn, setTurn] = useState(0);
   const [audioUrl, setAudioUrl] = useState([]);
 
@@ -21,13 +22,13 @@ function App() {
   return (
     <div className="App">
       <h1>Audio Player</h1>
-      <FileUpload onFileUpload={handleFileUpload} />
+      <SliderApp count={count} setCount={setCount} />
+      {/* <FileUpload onFileUpload={handleFileUpload} />
       {audioUrl.map(function (audio, index) {
         return (
           <AudioPlayer audioUrl={audio} turn={turn} setTurn={setTurn} index={index} key={index} />
         );
-      })}
-      {/* <SliderApp /> */}
+      })} */}
     </div >
   );
 }

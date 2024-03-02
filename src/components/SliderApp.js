@@ -3,43 +3,68 @@ import {
     RangeSlider,
     RangeSliderTrack,
     RangeSliderFilledTrack,
-    RangeSliderThumb, RangeSliderMark,
+    RangeSliderThumb, RangeSliderMark, Box, Badge
 } from '@chakra-ui/react';
 import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 
 
-const SliderApp = ({ dur }) => {
+const SliderApp = ({ count, setCount, dur }) => {
 
-    const [duration, setDuration] = useState(0);
+    const [duration, setDuration] = useState(300);
+    const [values, setValues] = useState([]);
 
     const arrayRange = (start, stop, step) =>
         Array.from(
             { length: (stop - start) / step + 1 },
             (value, index) => start + index * step
         );
-
-    console.log(arrayRange(0, 360, 10));
-
+    const steps = arrayRange(0, duration, 20);
+    const countArray = arrayRange(0, count - 1, 1);
+    const sliderArray = arrayRange(0, duration, duration / (count + 1)).slice(1, count + 1);
     useEffect(() => {
-
+        setValues(sliderArray);
     }, []);
 
 
 
     return (
-        <RangeSlider
-            defaultValue={[120, 240]} min={0} max={300} step={30}
-            onChangeEnd={(val) => console.log(val)}
-        >
-            <RangeSliderMark value={280} >
-                50%
-            </RangeSliderMark>
-            <RangeSliderTrack bg='red.100'>
-                <RangeSliderFilledTrack bg='tomato' />
-            </RangeSliderTrack>
-            <RangeSliderThumb boxSize={6} index={0} />
-            <RangeSliderThumb boxSize={6} index={1} />
-        </RangeSlider >
+        <Box width={"100%"} p={"30px"}>
+            <RangeSlider
+                defaultValue={sliderArray} min={0} max={duration} step={1}
+                onChange={(val) => setValues(val)}
+                onChangeEnd={(val) => console.log(val)}
+            >
+                {steps.map(function (step, index) {
+                    return (
+                        <RangeSliderMark value={step} key={index} >
+                            {step}
+                        </RangeSliderMark>
+                    );
+                })}
+
+                <RangeSliderTrack bg='red.100'>
+                    <RangeSliderFilledTrack bg='tomato' />
+                </RangeSliderTrack>
+                {countArray.map(function (step, index) {
+                    return (
+                        <RangeSliderThumb boxSize={8} index={index} key={index} opacity={"70%"}>
+                            <RangeSliderMark
+                                value={20}
+                                textAlign='center'
+                                bg='blue.500'
+                                color='white'
+                                mt='-12'
+                                ml='-2'
+                                w='12'
+                            >
+                                {values[index]}
+                            </RangeSliderMark>
+                        </RangeSliderThumb>
+                    );
+                })}
+            </RangeSlider >
+        </Box >
+
     );
 };
 
