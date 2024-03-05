@@ -4,7 +4,7 @@ import WaveSurfer from 'wavesurfer.js';
 // import styled from 'styled-components';
 import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 
-const Waveform = ({ audioUrl, turn, setTurn, index, startTime = 0, endTime = 3 }) => {
+const Waveform = ({ audioUrl, turn, setTurn, index, startTime = 0, endTime = 5 }) => {
     const containerRef = useRef();
     const waveSurferRef = useRef({
         isPlaying: () => false,
@@ -24,6 +24,13 @@ const Waveform = ({ audioUrl, turn, setTurn, index, startTime = 0, endTime = 3 }
             waveSurferRef.current = waveSurfer;
             waveSurfer.seekTo(startTime / waveSurfer.getDuration());
         });
+        waveSurfer.on('finish', () => {
+            console.log(index, turn);
+            // if (turn == index) {
+            //     waveSurfer.seekTo(startTime / waveSurfer.getDuration());
+            //     waveSurferRef.current.playPause();
+            // }
+        });
         return () => {
             waveSurfer.destroy();
         };
@@ -33,8 +40,8 @@ const Waveform = ({ audioUrl, turn, setTurn, index, startTime = 0, endTime = 3 }
         if (turn == index) {
             waveSurferRef.current.playPause();
             setTimeout(() => {
-                waveSurferRef.current.playPause();
                 setTurn(turn + 1);
+                waveSurferRef.current.playPause();
             }, (endTime - startTime) * 1000);
         }
     }, [turn]);

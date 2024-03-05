@@ -13,9 +13,8 @@ const FileUpload = ({ onFileUpload, duration, setDuration, count, setCount }) =>
             const audio = new Audio(e.target.result);
             audio.onloadedmetadata = function () {
                 // console.log(3 + parseInt(audio.duration.toFixed(2)));
-                duration += parseInt(audio.duration.toFixed(2));
+                setDuration([...duration, parseInt(audio.duration.toFixed(2))]);
                 count += 1;
-                setDuration(duration);
                 setCount(count);
             };
         };

@@ -8,7 +8,7 @@ import {
 import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 
 
-const SliderApp = ({ dur, count, setCount, values: finValues, setValues: setFinValues }) => {
+const SliderApp = ({ dur, count, setCount, finValues, setFinValues }) => {
 
     const [duration, setDuration] = useState(300);
     const [values, setValues] = useState([]);
@@ -18,37 +18,64 @@ const SliderApp = ({ dur, count, setCount, values: finValues, setValues: setFinV
             { length: (stop - start) / step + 1 },
             (value, index) => start + index * step
         );
+
+
+
+    const countArray = () => {
+        return arrayRange(0, count - 1, 1);
+    };
+    const pairArray = () => {
+        return arrayRange(0, duration, duration / (count + 1));
+    };
+    const sliderArray = () => {
+        return pairArray().slice(1, count + 1);
+    };
     const steps = arrayRange(0, duration, 10);
-    const countArray = arrayRange(0, count - 1, 1);
-    const pairArray = arrayRange(0, duration, duration / (count + 1));
-    const sliderArray = pairArray.slice(1, count + 1);
+    // const countArray = arrayRange(0, count - 1, 1);
+    // const pairArray = arrayRange(0, duration, duration / (count + 1));
+    // const sliderArray = pairArray.slice(1, count + 1);
 
     useEffect(() => {
-        setValues(sliderArray);
-        setFinValues(pairArray);
-    }, []);
+
+        console.log(count);
+
+
+    }, [count]);
+
+    // useEffect(() => {
+    //     console.log(sliderArray);
+    //     setValues(sliderArray());
+    //     setFinValues(sliderArray());
+    // }, []);
 
 
 
     return (
-        <Box width={"100%"} p={"30px"}>
+        <Box width={"100%"} p={"25px"}>
             <RangeSlider
-                defaultValue={sliderArray} min={0} max={duration} step={1}
+                defaultValue={arrayRange(0, duration, duration / (count + 1)).slice(1, count + 1)} min={0} max={duration} step={1}
                 onChange={(val) => setValues(val)}
-                onChangeEnd={(val) => setFinValues(val)}
+                onChangeEnd={(val) => setFinValues(val)
+                }
             >
                 {steps.map(function (step, index) {
                     return (
-                        <RangeSliderMark value={step} key={index} >
-                            {step}
-                        </RangeSliderMark>
+                        <RangeSliderMark children={step} value={step} key={index} mt='4px' color='gray.300' fontSize='sm' />
                     );
                 })}
 
-                <RangeSliderTrack bg='red.100'>
-                    <RangeSliderFilledTrack bg='tomato' />
-                </RangeSliderTrack>
-                {countArray.map(function (step, index) {
+                <RangeSliderTrack bg='red.200' />
+                {
+                    arrayRange(0, count - 1, 1).map(cnt => {
+                        return (
+                            <div>
+                                <RangeSliderThumb boxSize={8} index={cnt} key={cnt} />
+                            </div>
+
+                        );
+                    })
+                }
+                {/* {arrayRange(0, duration, duration / (count + 1)).slice(1, count + 1).map(function (step, index) {
                     return (
                         <RangeSliderThumb boxSize={8} index={index} key={index} opacity='70%'>
                             <RangeSliderMark
@@ -64,10 +91,10 @@ const SliderApp = ({ dur, count, setCount, values: finValues, setValues: setFinV
                             </RangeSliderMark>
                         </RangeSliderThumb>
                     );
-                })}
+                })} */
+                }
             </RangeSlider >
         </Box >
-
     );
 };
 

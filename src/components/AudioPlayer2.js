@@ -1,43 +1,29 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Box } from '@chakra-ui/react';
 
-const AudioPlayer = ({ audioUrl, turn, setTurn, index, startTime = 0, endTime = 3 }) => {
+const AudioPlayer = ({ audioUrl, turn, setTurn, index, startTime = 5, endTime = 10 }) => {
     const audioRef = useRef(null);
-    const [isPlaying, setIsPlaying] = useState(false);
+    // const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         const audioElement = audioRef.current;
 
-        if (audioElement) {
+        if (audioElement && turn == index) {
             audioElement.currentTime = startTime;
-            audioElement.play().then(() => {
-                setIsPlaying(true);
-            });
+            audioElement.play();
             setTimeout(() => {
                 audioRef.current.pause();
-                alert('Audio has finished playing!');
-            }, 3000);
-
-
-        }
-    }, [startTime]);
-
-    const handlePlayPause = () => {
-        const audioElement = audioRef.current;
-
-        if (audioElement.paused) {
-            audioElement.play();
-            setIsPlaying(true);
+                setTurn(turn + 1);
+            }, (endTime - startTime + 1) * 1000);
         } else {
-            audioElement.pause();
-            setIsPlaying(false);
         }
-    };
+    }, [turn]);
+
 
     return (
-        <div>
+        <Box height={"30px"} width={"20%"} border={"1px solid black"}>
             <audio ref={audioRef} src={audioUrl} />
-            <button onClick={handlePlayPause}>{isPlaying ? 'Pause' : 'Play'}</button>
-        </div>
+        </Box>
     );
 };
 
