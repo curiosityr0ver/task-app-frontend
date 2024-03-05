@@ -10,7 +10,7 @@ import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
 
 const SliderApp = ({ dur, count, setCount, finValues, setFinValues }) => {
 
-    const [duration, setDuration] = useState(300);
+    const [duration, setDuration] = useState(dur.reduce((a, b) => a + b, 0));
     const [values, setValues] = useState([]);
 
     const arrayRange = (start, stop, step) =>
@@ -31,7 +31,7 @@ const SliderApp = ({ dur, count, setCount, finValues, setFinValues }) => {
     const steps = arrayRange(0, duration, 10);
 
     useEffect(() => {
-
+        console.log(dur);
         setFinValues(sliderArray());
         console.log(count);
 
@@ -51,7 +51,7 @@ const SliderApp = ({ dur, count, setCount, finValues, setFinValues }) => {
             <RangeSlider
                 defaultValue={arrayRange(0, duration, duration / (count + 1)).slice(1, count + 1)} min={0} max={duration} step={1}
                 onChange={(val) => setValues(val)}
-                onChangeEnd={(val) => setFinValues(val)
+                onChangeEnd={(val) => { console.log(val); setFinValues(val); }
                 }
             >
                 {steps.map(function (step, index) {
