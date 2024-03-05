@@ -5,14 +5,16 @@ import AudioPlayer2 from './components/AudioPlayer2';
 // import SliderApp from './components/SliderApp';
 import SliderApp from './components/SliderApp';
 
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Button, Box, ButtonGroup } from '@chakra-ui/react';
 
 function App() {
   const [count, setCount] = useState(0);
   const [turn, setTurn] = useState(-1);
   const [duration, setDuration] = useState([]);
+  const [totalDuration, setTotalDuration] = useState(300);
   const [audioUrl, setAudioUrl] = useState([]);
   const [values, setValues] = useState([]);
+  const [show, setShow] = useState(false);
   const handleFileUpload = (file) => {
     const url = URL.createObjectURL(file);
     setAudioUrl([...audioUrl, url]);
@@ -33,22 +35,26 @@ function App() {
       // }
       arrayOfPairs.push([values[i - 1], values[i]]);
     }
-    if (count > 1) arrayOfPairs.push([values[values.length - 1], values[values.length - 1] + (values[1] - values[0])]);
+    if (count > 1) arrayOfPairs.push([values[values.length - 1], totalDuration]);
+    console.log(values[0]);
+    console.log(arrayOfPairs);
 
-    // console.log(arrayOfPairs);
-
-  }, [values]);
+  }, [count, values]);
 
   return (
     <div className="App">
       <h1>Audio Player</h1>
-      <FileUpload onFileUpload={handleFileUpload} duration={duration} setDuration={setDuration} count={count} setCount={setCount} />
-      {audioUrl.map((audio, index) => <AudioPlayer2 audioUrl={audioUrl[index]} turn={turn} setTurn={setTurn} index={index} key={index} />)}
-      {count > 0 && <SliderApp duration={duration} count={count} setCount={setCount} finValues={values} setFinValues={setValues} />}
+      {!show && <FileUpload onFileUpload={handleFileUpload} duration={duration} setDuration={setDuration} count={count} setCount={setCount} />
+      }      {audioUrl.map((audio, index) => <AudioPlayer2 audioUrl={audioUrl[index]} turn={turn} setTurn={setTurn} index={index} key={index} />)}
+      {count > 0 && show && <SliderApp duration={duration} count={count - 1} setCount={setCount} finValues={values} setFinValues={setValues} />}
       <Button colorScheme='blue' onClick={() => { turn < 0 ? setTurn(0) : setTurn(turn * 1); }}>Play</Button>
-      <br />
-      {/* <Button colorScheme='red' onClick={() => setCount(count + 1)}>Count +</Button>
-      <Button colorScheme='green' onClick={() => setCount(count - 1)}>Count -</Button> */}
+      {!show && <Box display="flex" m="2rem" justifyContent={"center"} gap={"2rem"}>
+
+        <Button colorScheme='red' onClick={() => setCount(count + 1)}>Count +</Button>
+        {count}
+        <Button colorScheme='green' onClick={() => setCount(count - 1)}>Count -</Button>
+      </Box>}
+      <Button onClick={() => { count > 1 && setShow(!show); }}>{!show ? "Show tracks" : "Update tracks"}</Button>
 
     </div >
   );

@@ -19,8 +19,6 @@ const SliderApp = ({ dur, count, setCount, finValues, setFinValues }) => {
             (value, index) => start + index * step
         );
 
-
-
     const countArray = () => {
         return arrayRange(0, count - 1, 1);
     };
@@ -31,12 +29,10 @@ const SliderApp = ({ dur, count, setCount, finValues, setFinValues }) => {
         return pairArray().slice(1, count + 1);
     };
     const steps = arrayRange(0, duration, 10);
-    // const countArray = arrayRange(0, count - 1, 1);
-    // const pairArray = arrayRange(0, duration, duration / (count + 1));
-    // const sliderArray = pairArray.slice(1, count + 1);
 
     useEffect(() => {
 
+        setFinValues(sliderArray());
         console.log(count);
 
 
