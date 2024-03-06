@@ -12,11 +12,15 @@ const colors = [
     },
     {
         primary: "#EAFFD0",
-        secondary: "#95E1D3"
+        secondary: "#9DC08B"
     },
     {
-        primary: "#FFC7C7",
-        secondary: "#FFE2E2"
+        primary: "#FFE2E2",
+        secondary: "#FFC7C7",
+    },
+    {
+        primary: "#F4DFBA",
+        secondary: "#EEC373",
     },
 ];
 
@@ -26,28 +30,24 @@ const Waveform = ({ audioUrl, turn, setTurn, playing, setPlaying, index }) => {
         isPlaying: () => false,
     });
 
+
     useEffect(() => {
+        const currColor = colors[(Math.floor(Math.random() * colors.length))];
         const waveSurfer = WaveSurfer.create({
             container: containerRef.current,
             responsive: true,
             barWidth: 2,
             barHeight: 10,
             cursorWidth: 0,
-            progressColor: colors[0].primary,
-            waveColor: colors[0].secondary
+            waveColor: currColor.primary,
+            progressColor: currColor.secondary
         });
         waveSurfer.load(audioUrl);
 
         waveSurfer.on('ready', () => {
             waveSurferRef.current = waveSurfer;
         });
-        waveSurfer.on('finish', () => {
-            setTurn(turn + 2);
-            // if (turn == index) {
-            //     waveSurfer.seekTo(startTime / waveSurfer.getDuration());
-            //     waveSurferRef.current.playPause();
-            // }
-        });
+        waveSurfer.on('finish', () => setTurn(index + 1));
         return () => {
             waveSurfer.destroy();
         };
@@ -90,7 +90,7 @@ const Waveform = ({ audioUrl, turn, setTurn, playing, setPlaying, index }) => {
 
     return (
         <div>
-            <Box margin={"10px"} onClick={() => { setPlaying(false); setTurn(index); setPlaying(true); }} ref={containerRef} />
+            <Box padding={"15px"} onClick={() => { setPlaying(false); setTurn(index); setPlaying(true); }} ref={containerRef} />
         </div>
     );
 };
